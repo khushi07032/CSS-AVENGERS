@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Vault - Secure Document Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
+    <style>
+        :root {
+            --primary: #1E3A8A;
+            --accent: #3B82F6;
+            --text: #1F2937;
+            --warning: #DC2626;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background: linear-gradient(-45deg, #3B82F6, #1E3A8A, #4F46E5, #60A5FA);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .drop-zone {
+            border: 3px dashed var(--primary);
+            padding: 3rem;
+            text-align: center;
+            background: rgba(59, 130, 246, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .drop-zone:hover {
+            transform: scale(1.05);
+        }
+
+        .file-tile {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+        .file-tile:hover {
+            transform: scale(1.05);
+        }
+
+        .pdf-viewer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pdf-container {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--warning);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Note Vault</h1>
+            <p>Secure Document Management with Annotations</p>
+        </header>
+
+        <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+            <p>Click to browse</p>
+            <input type="file" id="fileInput" accept="application/pdf" hidden>
+        </div>
+
+        <div id="documentGrid"></div>
+    </div>
+
+    <div class="pdf-viewer" id="pdfViewer">
+        <div class="pdf-container">
+            <button class="close-btn" onclick="closePDF()">X</button>
+            <canvas id="pdfCanvas"></canvas>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            handleFiles(event.target.files);
+        });
+
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                if (file.type === 'application/pdf') {
+                    addFileToGrid(file.name, URL.createObjectURL(file));
+                } else {
+                    alert('Please upload a valid PDF file.');
+                }
+            });
+        }
+
+        function addFileToGrid(filename, fileUrl) {
+            const grid = document.getElementById('documentGrid');
+            const tile = document.createElement('div');
+            tile.className = 'file-tile';
+            tile.innerHTML = `
+                <span class="file-icon">📁</span>
+                <h3>${filename}</h3>
+            `;
+            tile.ondblclick = () => openPDF(fileUrl);
+            grid.appendChild(tile);
+        }
+
+        function openPDF(fileUrl) {
+            document.getElementById('pdfViewer').style.display = 'flex';
+            const canvas = document.getElementById('pdfCanvas');
+            const context = canvas.getContext('2d');
+
+            pdfjsLib.getDocument(fileUrl).promise.then(pdf => {
+                pdf.getPage(1).then(page => {
+                    const viewport = page.getViewport({ scale: 1.5 });
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    page.render({ canvasContext: context, viewport: viewport });
+                });
+            });
+        }
+
+        function closePDF() {
+            document.getElementById('pdfViewer').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

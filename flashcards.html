@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Flashcards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f5f5dc;
+            padding: 20px;
+        }
+        .setup-container {
+            background: #ffeb3b;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            margin: 20px auto;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        input, textarea, button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+        button {
+            background-color: black;
+            color: yellow;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .flashcard-container {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .flashcard {
+            width: 250px;
+            height: 160px;
+            perspective: 1000px;
+            margin: 10px;
+        }
+        .flashcard-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        .flashcard.flip .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            backface-visibility: hidden;
+        }
+        .flashcard-front {
+            background: linear-gradient(to bottom, #ffcc00, #ff8800);
+            color: black;
+        }
+        .flashcard-back {
+            background: linear-gradient(to bottom, #ff8800, #ff4500);
+            color: black;
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body>
+    <h2>Student Flashcards</h2>
+    <div class="setup-container">
+        <input type="number" id="numFlashcards" placeholder="Enter number of flashcards" min="1">
+        <button onclick="generateFlashcardFields()">Set Questions</button>
+    </div>
+    <div id="flashcardFormContainer"></div>
+    <div class="flashcard-container" id="flashcardContainer"></div>
+    <script>
+        function generateFlashcardFields() {
+            let count = document.getElementById("numFlashcards").value;
+            if (count < 1) {
+                alert("Please enter a valid number.");
+                return;
+            }
+            let formContainer = document.getElementById("flashcardFormContainer");
+            formContainer.innerHTML = `<div class="flashcard-form"><h3>Enter Your Questions</h3>`;
+            for (let i = 0; i < count; i++) {
+                formContainer.innerHTML += `
+                    <textarea class="question" placeholder="Question ${i + 1}"></textarea>
+                    <textarea class="answer" placeholder="Answer ${i + 1}"></textarea>
+                `;
+            }
+            formContainer.innerHTML += `<button onclick="addFlashcards()">Start Reviewing</button></div>`;
+        }
+        
+        function addFlashcards() {
+            let questions = document.querySelectorAll(".question");
+            let answers = document.querySelectorAll(".answer");
+            let flashcardContainer = document.getElementById("flashcardContainer");
+            flashcardContainer.innerHTML = "";
+            flashcardContainer.style.display = "flex";
+            document.getElementById("flashcardFormContainer").style.display = "none";
+            
+            for (let i = 0; i < questions.length; i++) {
+                if (questions[i].value.trim() && answers[i].value.trim()) {
+                    let flashcard = document.createElement("div");
+                    flashcard.classList.add("flashcard");
+                    flashcard.innerHTML = `
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">${questions[i].value}</div>
+                            <div class="flashcard-back">${answers[i].value}</div>
+                        </div>
+                    `;
+                    flashcard.addEventListener("click", function () {
+                        this.classList.toggle("flip");
+                    });
+                    flashcardContainer.appendChild(flashcard);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

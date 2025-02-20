@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Vault - Search PYQs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1E3A8A;
+            --accent: #3B82F6;
+            --text: #1F2937;
+            --background: linear-gradient(135deg, #667eea, #764ba2);
+            --warning: #DC2626;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background: var(--background);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .search-bar:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        .recent-searches {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .recent-searches p {
+            margin: 5px 0;
+            color: var(--primary);
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .recent-searches p:hover {
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .file-tile {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background 0.3s ease;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+        .file-tile:hover {
+            transform: translateX(10px) scale(1.05);
+            background: var(--accent);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Paper Vault</h1>
+        <p>Search for Previous Year Question Papers</p>
+        
+        <input type="text" id="searchInput" class="search-bar" placeholder="Enter subject name...">
+        <div class="recent-searches" id="recentSearches"></div>
+        
+        <div id="documentGrid"></div>
+    </div>
+
+    <script>
+        let recentSearches = [];
+        const pyqDatabase = {
+            "DBMS": ["DBMS_2023.pdf", "DBMS_2022.pdf"],
+            "Maths": ["Maths_2023.pdf", "Maths_2022.pdf"],
+            "Physics": ["Physics_2023.pdf", "Physics_2022.pdf"],
+            "Computer Science": ["CS_2023.pdf", "CS_2022.pdf"]
+        };
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+            searchPYQs(this.value);
+        });
+
+        function searchPYQs(query) {
+            const grid = document.getElementById('documentGrid');
+            grid.innerHTML = '';
+            if (pyqDatabase[query]) {
+                pyqDatabase[query].forEach(file => {
+                    addFileToGrid(file);
+                });
+                updateRecentSearches(query);
+            }
+        }
+
+        function addFileToGrid(filename) {
+            const grid = document.getElementById('documentGrid');
+            const tile = document.createElement('div');
+            tile.className = 'file-tile';
+            tile.innerHTML = `<h3>${filename}</h3>`;
+            tile.ondblclick = () => alert(`Opening ${filename}`);
+            grid.appendChild(tile);
+        }
+
+        function updateRecentSearches(query) {
+            if (!recentSearches.includes(query)) {
+                recentSearches.unshift(query);
+                if (recentSearches.length > 5) recentSearches.pop();
+            }
+            renderRecentSearches();
+        }
+
+        function renderRecentSearches() {
+            const recentDiv = document.getElementById('recentSearches');
+            recentDiv.innerHTML = '<h4>Recent Searches:</h4>' + 
+                recentSearches.map(search => `<p onclick="searchPYQs('${search}')">${search}</p>`).join('');
+        }
+    </script>
+</body>
+</html>
