@@ -7,7 +7,6 @@
     <meta name="keywords" content="HTML, CSS, JavaScript, Student, Study Tools">
     <meta name="author" content="Your Name">
     <title>Student Study Hub</title>
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -28,7 +27,6 @@
                         url("../aaaa.jpg") no-repeat center center/cover;
         }
 
-        /* Semi-dark overlay */
         body::before {
             content: "";
             position: absolute;
@@ -40,7 +38,6 @@
             z-index: 1;
         }
 
-        /* Centered Button */
         .btn-library {
             position: absolute;
             z-index: 2;
@@ -65,7 +62,6 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
 
-        /* Navigation Menu */
         .sidebar {
             height: 100%;
             width: 250px;
@@ -97,7 +93,6 @@
             transform: translateX(10px);
         }
 
-        /* Profile Section */
         .profile-section {
             padding: 20px;
             text-align: center;
@@ -118,7 +113,6 @@
             font-weight: bold;
         }
 
-        /* Close Button */
         .close-btn {
             position: absolute;
             top: 10px;
@@ -133,7 +127,6 @@
             color: #ccc;
         }
 
-        /* Open Button */
         .open-btn {
             position: absolute;
             top: 20px;
@@ -156,10 +149,8 @@
     </style>
 </head>
 <body>
-    <!-- Navigation Button -->
     <button class="open-btn" onclick="openNav()" aria-label="Open navigation menu">☰ Menu</button>
 
-    <!-- Navigation Sidebar -->
     <nav id="mySidebar" class="sidebar" aria-label="Main navigation">
         <button class="close-btn" onclick="closeNav()" aria-label="Close navigation menu">×</button>
         <div class="profile-section">
@@ -200,7 +191,6 @@
         document.getElementById("mySidebar").style.left = "-250px";
     }
 
-    // Close the sidebar when clicking outside of it
     document.addEventListener('click', function(event) {
         const sidebar = document.getElementById('mySidebar');
         const openBtn = document.querySelector('.open-btn');
@@ -209,7 +199,6 @@
         }
     });
 
-    // Scroll to Top of the Page
     function scrollToTop() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }

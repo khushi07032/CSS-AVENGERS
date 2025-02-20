@@ -114,8 +114,10 @@
         }
 
         /* About Section */
+       
+        /* Integrated About Us Section Styles */
         .about-section {
-            background-color: rgba(34, 34, 34, 0.8);
+            background-color: rgba(34, 34, 34, 0.8); /* Slightly transparent dark background */
             color: white;
             padding: 40px 20px;
             text-align: center;
@@ -124,6 +126,135 @@
             align-items: center;
         }
 
+        .about-container {
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .about-left {
+            width: 55%;
+            text-align: left;
+        }
+
+        .about-left h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #ff8c00; /* Accent color for heading */
+        }
+
+        .about-left p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .about-left .btn {
+            background-color: #ff8c00;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .about-left .btn:hover {
+            background-color: #e67e00;
+        }
+
+        .stats {
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.1); /* Slightly transparent white */
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+            backdrop-filter: blur(5px); /* Glassmorphism effect */
+        }
+
+        .stat-box img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+        .stat-box h2 {
+            font-size: 30px;
+            color: white;
+        }
+
+        .stat-box p {
+            font-size: 16px;
+        }
+
+        /* Responsive Design for About Us Section */
+        @media (max-width: 900px) {
+            .about-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .about-left,
+            .stats {
+                width: 100%;
+            }
+
+            .stats {
+                margin-top: 30px;
+            }
+        }
+
+        /* Ensure stat-boxes are square and enlarge on click */
+.stat-box {
+    width: 150px;  /* Fixed width */
+    height: 150px; /* Fixed height to make it square */
+    text-align: center;
+    padding: 20px;
+    margin: 10px;
+    background: rgba(255, 255, 255, 0.1); /* Slightly transparent white */
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+    backdrop-filter: blur(5px); /* Glassmorphism effect */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.stat-box img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.stat-box h2 {
+    font-size: 22px;
+    color: white;
+    margin: 5px 0;
+}
+
+.stat-box p {
+    font-size: 14px;
+}
+
+/* Enlarge effect on click */
+.stat-box:active {
+    transform: scale(1.2);
+}
+
+
+    
         /* Footer */
         .footer {
             background-color: #111;
